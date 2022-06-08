@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <link rel="stylesheet" href="style.css">
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css">
+        <title>Music Player</title>
+    </head>
+
+
+    <body>
+        <div class="background">
+            <video id="video-background" muted loop width="100%">
+                <source src="assets/video.mp4"><source>
+            </video>
+
+        <div class="container" id="container">
+            <div class="header" style="color: rgb(240, 228, 228);">
+                <h1>Mood Player</h1>
+            </div>
+
+        <div class="center">
+            <div >
+                <div class="playpause-track" id="playpause-track" onclick="playPauseTrack()">
+                    <i class="fa fa-play-circle fa-3x"></i>
+                </div>
+                <audio src="assets/music.mp3" id="audio"></audio>
+            </div>
+        </div>
+
+        <div class="progress-container" id="progress-container">
+            <div class="progress" id="progress"></div>
+        </div>
+
+        <div>
+            <div class="moodChanger" id="moodChanger" value="Change mood" onclick="playSound()">
+                <i class="fa-solid fa-cloud-sun fa-2x"></i>
+            </div>
+            <audio id="sound" src="assets/sound.wav" ></audio>
+        </div>
+
+
+        </div>
+        </div> 
+        
+    </body>
+
+
+<script>
+    const videoBackground = document.getElementById("video-background");
+    const audio = document.getElementById("audio");
+    const icon = document.getElementById("playpause-track")
+
+    const progress = document.getElementById('progress');
+    const progressContainer = document.getElementById('progress-container');
+
+    const sound = document.getElementById("sound");
+    sound.volume = 0.3;
+    const sun = document.getElementById("moodChanger");
+
+function playPauseTrack() {
+    if(audio.paused){
+        audio.play();
+        videoBackground.play();
+        icon.innerHTML = ' <i class="fa fa-pause-circle fa-3x"></i> '
+    }else{
+        audio.pause();
+        videoBackground.pause();
+        icon.innerHTML = ' <i class="fa fa-play-circle fa-3x"></i> '
+    }
+}   
+
+audio.addEventListener('timeupdate', updateProgress);
+
+function updateProgress(e) {
+  const { duration, currentTime } = e.srcElement;
+  const progressPercent = (currentTime / duration) * 100;
+  progress.style.width = `${progressPercent}%`;
+}
+
+progressContainer.addEventListener('click', setProgress);
+
+function setProgress(e) {
+  const width = this.clientWidth;
+  const clickX = e.offsetX;
+  const duration = audio.duration;
+
+  audio.currentTime = (clickX / width) * duration;
+}
+
+
+function playSound() {
+    if(sound.paused){
+        sound.play();
+        videoBackground.style.opacity = "0.5";
+        sun.innerHTML = ' <i class="fa-solid fa-cloud-sun-rain fa-2x"></i> '
+    }else{
+        sound.pause();
+        videoBackground.style.opacity = "1";
+       sun.innerHTML = ' <i class="fa-solid fa-cloud-sun fa-2x"></i>'
+    }
+}
+
+
+</script>
+
+</html>
